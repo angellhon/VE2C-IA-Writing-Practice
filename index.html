@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VE2C IA Mock Practice - Youth College VTC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; font-size: 18px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #e2e8f0; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 4px; }
+        
+        .blank-input {
+            background-color: #ffffff;
+            border: 2px solid #3b82f6;
+            color: #1e3a8a;
+            font-weight: 700;
+            padding: 8px 14px;
+            border-radius: 8px;
+            outline: none;
+            display: inline-block;
+            margin: 6px 6px;
+            font-size: 1.05rem;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+            transition: all 0.2s ease;
+        }
+        .blank-input:focus {
+            border-color: #d97706;
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25);
+        }
+        
+        .blank-short { width: 220px; min-width: 180px; }
+        .blank-medium { width: 340px; min-width: 280px; }
+        .blank-long { width: 440px; min-width: 360px; max-width: 100%; }
+
+        .highlight-prompt {
+            background-color: #fef08a;
+            color: #854d0e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            border-bottom: 2px solid #eab308;
+        }
+
+        .highlight-action {
+            background-color: #dbeafe;
+            color: #1e40af;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
+            border-bottom: 2px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-sky-50 text-slate-800 min-h-screen flex flex-col custom-scrollbar text-lg">
+
+    <header class="bg-white border-b border-sky-200 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center font-bold text-3xl text-white shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid fa-pen-nib"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-2xl md:text-3xl text-slate-900 leading-tight">VE2C IA Mock Practice</h1>
+                    <p class="text-base text-blue-600 font-bold mt-0.5">VTC Youth College • Vocational English Workshop</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <div class="bg-amber-50 px-5 py-2.5 rounded-2xl border-2 border-amber-300 flex items-center space-x-3 text-lg shadow-sm">
+                    <i class="fa-solid fa-trophy text-amber-500 text-2xl"></i>
+                    <span class="font-bold text-slate-700">Score: <strong id="global-score" class="text-amber-600 font-black text-2xl">0</strong></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-white border-b border-sky-200 text-base md:text-lg font-bold shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 flex space-x-2 md:space-x-6 overflow-x-auto">
+            <button id="tab-scenario" onclick="switchTab('scenario')" class="px-5 py-4 border-b-4 border-blue-600 text-blue-600 flex items-center space-x-2.5 whitespace-nowrap">
+                <i class="fa-solid fa-envelope-open-text text-xl"></i>
+                <span>1. Prompt & Task Background</span>
+            </button>
+            <button id="tab-writer" onclick="switchTab('writer')" class="px-5 py-4 border-b-4 border-transparent text-slate-500 hover:text-blue-600 flex items-center space-x-2.5 whitespace-nowrap">
+                <i class="fa-solid fa-wand-magic-sparkles text-xl"></i>
+                <span>2. Interactive Email Builder</span>
+            </button>
+            <button id="tab-review" onclick="switchTab('review')" class="px-5 py-4 border-b-4 border-transparent text-slate-500 hover:text-blue-600 flex items-center space-x-2.5 whitespace-nowrap">
+                <i class="fa-solid fa-graduation-cap text-xl"></i>
+                <span>3. Model Answer & Grammar Analysis</span>
+            </button>
+            <button id="tab-quiz" onclick="switchTab('quiz')" class="px-5 py-4 border-b-4 border-transparent text-slate-500 hover:text-blue-600 flex items-center space-x-2.5 whitespace-nowrap">
+                <i class="fa-solid fa-gamepad text-xl"></i>
+                <span>4. 10-Min Knowledge Game</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 space-y-6">
+
+        <!-- ================= SECTION 1: SCENARIO & WORK PLAN ================= -->
+        <section id="sec-scenario" class="space-y-6">
+            <div class="bg-white p-6 md:p-8 rounded-3xl border-2 border-sky-200 shadow-xl">
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3 flex items-center">
+                    <i class="fa-solid fa-file-contract text-blue-600 mr-3"></i> Step 1: Read the Scenario & Background
+                </h2>
+                <p class="text-slate-700 text-lg leading-relaxed">
+                    You are <strong>Phoebe Chan</strong>, Officer at Alpha Engineering Company. Carefully read the incoming email from your colleague <strong>Jason Lee</strong> (with key task details highlighted) and review your <strong>Work Plan Table</strong> before starting the interactive writing activity.
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-6">
+                <!-- Jason's Email with Highlights -->
+                <div class="bg-white rounded-3xl border-2 border-sky-200 p-6 shadow-xl space-y-4 flex flex-col">
+                    <div class="flex justify-between items-center border-b-2 border-sky-100 pb-3">
+                        <span class="text-lg font-extrabold text-blue-600 flex items-center">
+                            <i class="fa-solid fa-inbox mr-2.5 text-xl"></i> Received Email
+                        </span>
+                        <span class="text-xs bg-amber-100 text-amber-800 font-bold px-3 py-1.5 rounded-full border border-amber-300">
+                            Key Details Highlighted
+                        </span>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 text-slate-800 space-y-4 leading-relaxed text-lg flex-grow">
+                        <div class="text-sm text-slate-500 border-b border-slate-200 pb-3 space-y-1">
+                            <p><strong>From:</strong> Jason Lee &lt;jasonlee@aec.com&gt;</p>
+                            <p><strong>To:</strong> Phoebe Chan &lt;phoebechan@aec.com&gt;</p>
+                            <p><strong>Subject:</strong> Bread Runner Campaign</p>
+                        </div>
+                        <p>Dear Phoebe,</p>
+                        <p>
+                            I am going to organise the <strong>Bread Runner Campaign</strong>, which collects surplus bread from bakeries for donation.
+                        </p>
+                        <p class="p-3 bg-amber-50 rounded-xl border-l-4 border-amber-400">
+                            The Team Head has asked me to suggest the <span class="highlight-prompt">target participants</span> and a <span class="highlight-prompt">promotional method</span> for the event. I remember you organised the same event last year. Can you give me some ideas?
+                        </p>
+                        <p class="p-3 bg-blue-50 rounded-xl border-l-4 border-blue-400">
+                            As I have never joined this activity before, I don't know how to <span class="highlight-action">coordinate this campaign</span>. Could you tell me what to do?
+                        </p>
+                        <p>Thanks a lot.<br>Regards,<br><strong>Jason</strong></p>
+                    </div>
+                </div>
+
+                <!-- Phoebe's Work Plan Table -->
+                <div class="bg-white rounded-3xl border-2 border-sky-200 p-6 shadow-xl space-y-4">
+                    <div class="flex justify-between items-center border-b-2 border-sky-100 pb-3">
+                        <span class="text-lg font-extrabold text-indigo-600 flex items-center">
+                            <i class="fa-solid fa-list-check mr-2.5 text-xl"></i> Work Plan Table (Task Sheet)
+                        </span>
+                        <span class="text-xs bg-indigo-100 text-indigo-800 font-bold px-3 py-1.5 rounded-full border border-indigo-300">
+                            Phoebe's Notes
+                        </span>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse bg-white rounded-2xl overflow-hidden border border-slate-200 text-base">
+                            <thead>
+                                <tr class="bg-indigo-600 text-white text-base">
+                                    <th class="p-3 border border-indigo-700 w-12 text-center">#</th>
+                                    <th class="p-3 border border-indigo-700">Action Item</th>
+                                    <th class="p-3 border border-indigo-700">Remark / Condition</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200 text-slate-800 font-medium">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 text-center font-bold text-indigo-600">1</td>
+                                    <td class="p-3 border border-slate-200 font-bold">Confirm list of volunteers</td>
+                                    <td class="p-3 border border-slate-200 text-slate-500">-</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 text-center font-bold text-indigo-600">2</td>
+                                    <td class="p-3 border border-slate-200 font-bold">Send event details ➔ volunteers</td>
+                                    <td class="p-3 border border-slate-200 text-slate-600">e.g. locations, closing times of bakeries</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 text-center font-bold text-indigo-600">3</td>
+                                    <td class="p-3 border border-slate-200 font-bold">Volunteers: arrive at bakeries</td>
+                                    <td class="p-3 border border-slate-200 text-slate-600">5 minutes before closing times</td>
+                                </tr>
+                                <tr class="bg-amber-50 hover:bg-amber-100/80">
+                                    <td class="p-3 border border-amber-200 text-center font-bold text-amber-700">4a</td>
+                                    <td class="p-3 border border-amber-200 font-bold text-amber-900">Pack surplus bread</td>
+                                    <td class="p-3 border border-amber-200 font-semibold text-amber-800"><i class="fa-solid fa-code-branch mr-1 text-amber-600"></i> If volunteers receive donations</td>
+                                </tr>
+                                <tr class="bg-amber-50 hover:bg-amber-100/80">
+                                    <td class="p-3 border border-amber-200 text-center font-bold text-amber-700">4b</td>
+                                    <td class="p-3 border border-amber-200 font-bold text-amber-900">Record on activity report</td>
+                                    <td class="p-3 border border-amber-200 font-semibold text-amber-800"><i class="fa-solid fa-code-branch mr-1 text-amber-600"></i> If no donations</td>
+                                </tr>
+                                <tr class="hover:bg-slate-50">
+                                    <td class="p-3 border border-slate-200 text-center font-bold text-indigo-600">5</td>
+                                    <td class="p-3 border border-slate-200 font-bold">Collected bread ➔ charity organisations</td>
+                                    <td class="p-3 border border-slate-200 text-slate-600">the day following the activity</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Target & Promotion Notes Box -->
+                    <div class="bg-amber-50 border-2 border-amber-300 p-4 rounded-2xl text-slate-800 text-base space-y-2">
+                        <h4 class="font-extrabold text-amber-900 flex items-center">
+                            <i class="fa-solid fa-lightbulb text-amber-600 mr-2"></i> Phoebe's Brainstorming Notes:
+                        </h4>
+                        <ul class="list-disc list-inside space-y-1 text-amber-950 font-medium text-base">
+                            <li><strong>Target participants:</strong> Colleagues & families (Reason: easy to approach, reliable, committed)</li>
+                            <li><strong>Promotional Method:</strong> Internal newsletters (Reason: reach all colleagues directly, simple preparation work)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-end">
+                <button onclick="switchTab('writer')" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xl px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center">
+                    Go to Step 2: Interactive Email Builder <i class="fa-solid fa-arrow-right ml-3"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: INTERACTIVE EMAIL BUILDER ================= -->
+        <section id="sec-writer" class="space-y-6 hidden">
+            <div class="bg-white p-6 rounded-3xl border-2 border-sky-200 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 flex items-center">
+                        <i class="fa-solid fa-wand-magic-sparkles text-blue-600 mr-3"></i> Step 2: Interactive Email Builder
+                    </h2>
+                    <p class="text-slate-700 text-lg mt-1">
+                        Complete the email by filling in all the blanks independently. Use the reference notes sheet on the right (or tap below on mobile) to check details while typing!
+                    </p>
+                </div>
+                <!-- Quick Toggle Mobile Floating Button for Reference Sheet -->
+                <button onclick="toggleMobileReference()" class="lg:hidden bg-amber-500 hover:bg-amber-600 text-white font-extrabold px-5 py-3 rounded-2xl shadow-md transition flex items-center space-x-2">
+                    <i class="fa-solid fa-clipboard-list text-xl"></i>
+                    <span id="ref-toggle-text">Show Reference Notes</span>
+                </button>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-6 items-start relative">
+                
+                <!-- LEFT COLUMN: Interactive Blanks Form (7 cols) -->
+                <div class="lg:col-span-7 space-y-6">
+
+                    <!-- Section A: Greeting & Opening -->
+                    <div class="bg-white rounded-3xl p-6 md:p-8 border-2 border-sky-200 shadow-lg space-y-4">
+                        <div class="border-b-2 border-sky-100 pb-3 flex justify-between items-center">
+                            <span class="text-lg font-extrabold text-blue-600 uppercase tracking-wide">
+                                Part 1: Greeting & Opening Purpose
+                            </span>
+                            <span class="text-xs bg-blue-100 text-blue-800 font-bold px-3 py-1 rounded-full">Opening</span>
+                        </div>
+
+                        <div class="space-y-6 text-lg leading-loose">
+                            <div>
+                                <label class="block text-sm font-extrabold text-slate-600 mb-1">Salutation / Recipient:</label>
+                                <strong>Dear</strong> 
+                                <input type="text" id="b-recipient" placeholder="Name" class="blank-input blank-short">,
+                            </div>
+                            <div>
+                                <label class="block text-sm font-extrabold text-slate-600 mb-1">Opening Purpose statement:</label>
+                                <p class="mb-2 text-slate-700">Thank you for your email about the Bread Runner Campaign. I am writing to:</p>
+                                <select id="b-opening-purpose" class="blank-input blank-long text-base">
+                                    <option value="">-- Choose Purpose --</option>
+                                    <option value="correct">make suggestions and explain how to coordinate</option>
+                                    <option value="wrong1">ask for money and complain about bakeries</option>
+                                    <option value="wrong2">cancel the campaign immediately</option>
+                                </select>.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section B: Suggestions & Reasons -->
+                    <div class="bg-white rounded-3xl p-6 md:p-8 border-2 border-sky-200 shadow-lg space-y-6">
+                        <div class="border-b-2 border-sky-100 pb-3 flex justify-between items-center">
+                            <span class="text-lg font-extrabold text-amber-600 uppercase tracking-wide">
+                                Part 2: Making Suggestions & Giving Reasons
+                            </span>
+                            <span class="text-xs bg-amber-100 text-amber-800 font-bold px-3 py-1 rounded-full">Suggestions</span>
+                        </div>
+
+                        <div class="space-y-6 text-lg leading-loose bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                            <!-- Suggestion 1: Target -->
+                            <div class="space-y-3">
+                                <label class="block text-sm font-extrabold text-amber-900">Suggestion 1 (Target Participants & Reason):</label>
+                                <p class="text-slate-800 flex flex-wrap items-center gap-2">
+                                    Regarding the target participants, 
+                                    <select id="b-sug1-structure" class="blank-input blank-medium">
+                                        <option value="">-- Structure --</option>
+                                        <option value="correct">it might be a good idea to</option>
+                                        <option value="wrong1">you must forcing to</option>
+                                        <option value="wrong2">I suggest to</option>
+                                    </select> 
+                                    invite our 
+                                    <input type="text" id="b-target-who" placeholder="Target participants" class="blank-input blank-medium"> 
+                                    <select id="b-conn1" class="blank-input blank-short">
+                                        <option value="">-- Connective --</option>
+                                        <option value="correct">because</option>
+                                        <option value="wrong">but</option>
+                                    </select> 
+                                    they are easy to approach. 
+                                    Also, <input type="text" id="b-extra-reason1" placeholder="Supporting reason" class="blank-input blank-medium">.
+                                </p>
+                            </div>
+
+                            <!-- Suggestion 2: Method -->
+                            <div class="space-y-3 pt-4 border-t border-slate-200">
+                                <label class="block text-sm font-extrabold text-amber-900">Suggestion 2 (Promotional Method & Reason):</label>
+                                <p class="text-slate-800 flex flex-wrap items-center gap-2">
+                                    As for the promotional method, 
+                                    <select id="b-sug2-structure" class="blank-input blank-medium">
+                                        <option value="">-- Structure --</option>
+                                        <option value="correct">I suggest using</option>
+                                        <option value="wrong1">I suggest to use</option>
+                                        <option value="wrong2">it good idea using</option>
+                                    </select> 
+                                    the company's 
+                                    <input type="text" id="b-promo-method" placeholder="Promotional method" class="blank-input blank-medium"> 
+                                    for two reasons. First, they can reach all colleagues directly. 
+                                    In addition, <input type="text" id="b-reason2b" placeholder="Second reason" class="blank-input blank-medium">.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section C: Sequencers, Modals, Imperatives & Conditionals -->
+            <div class="bg-white rounded-3xl p-6 md:p-8 border-2 border-sky-200 shadow-lg space-y-6">
+                <div class="border-b-2 border-sky-100 pb-3 flex justify-between items-center">
+                    <span class="text-lg font-extrabold text-indigo-600 uppercase tracking-wide">
+                        Part 3: Work Plan (Instructions & Conditionals)
+                    </span>
+                    <span class="text-xs bg-indigo-100 text-indigo-800 font-bold px-3 py-1 rounded-full">Work Plan</span>
+                </div>
+
+                <div class="space-y-6 text-lg leading-loose bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                    <!-- Step 1 -->
+                    <div class="space-y-3">
+                        <label class="block text-sm font-extrabold text-indigo-900">Work Plan Step 1:</label>
+                        <p class="text-slate-800 flex flex-wrap items-center gap-2">
+                            To coordinate this campaign, 
+                            <select id="b-seq1" class="blank-input blank-short">
+                                <option value="">[Sequencer]</option>
+                                <option value="correct">first</option>
+                                <option value="wrong">finally</option>
+                            </select>, 
+                            you 
+                            <select id="b-mod1" class="blank-input blank-short">
+                                <option value="">[Modal]</option>
+                                <option value="correct">should</option>
+                                <option value="wrong">should to</option>
+                            </select> 
+                            <input type="text" id="b-step1-action" placeholder="Action verb" class="blank-input blank-medium">.
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="space-y-3 pt-4 border-t border-slate-200">
+                        <label class="block text-sm font-extrabold text-indigo-900">Work Plan Step 2 & Arrival Time:</label>
+                        <p class="text-slate-800 flex flex-wrap items-center gap-2">
+                            <select id="b-seq2" class="blank-input blank-short">
+                                <option value="">[Sequencer]</option>
+                                <option value="correct">Then</option>
+                                <option value="wrong">First</option>
+                            </select>, 
+                            you should send event details such as 
+                            <input type="text" id="b-info-loc" placeholder="Event details" class="blank-input blank-medium"> 
+                            to the volunteers. The volunteers should arrive 
+                            <input type="text" id="b-info-time" placeholder="Arrival schedule" class="blank-input blank-long">.
+                        </p>
+                    </div>
+
+                    <!-- If Conditionals & Imperatives -->
+                    <div class="p-5 bg-amber-50 border-2 border-amber-300 rounded-2xl space-y-4">
+                        <span class="text-sm font-extrabold text-amber-900 block uppercase tracking-wide">
+                            <i class="fa-solid fa-code-branch mr-1 text-amber-600"></i> Conditional Rules & Actions:
+                        </span>
+                        
+                        <div class="space-y-3">
+                            <label class="block text-xs font-bold text-amber-900">Condition A (If donations received):</label>
+                            <p class="text-slate-800 flex flex-wrap items-center gap-2">
+                                <select id="b-cond1" class="blank-input blank-short">
+                                    <option value="">[Condition]</option>
+                                    <option value="correct">If</option>
+                                    <option value="wrong">Because</option>
+                                </select> 
+                                the volunteers receive donations, 
+                                <input type="text" id="b-imp-pack" placeholder="Action instruction" class="blank-input blank-medium">.
+                            </p>
+                        </div>
+
+                        <div class="space-y-3 pt-3 border-t border-amber-200">
+                            <label class="block text-xs font-bold text-amber-900">Condition B (If no donations):</label>
+                            <p class="text-slate-800 flex flex-wrap items-center gap-2">
+                                <select id="b-cond2" class="blank-input blank-short">
+                                    <option value="">[Condition]</option>
+                                    <option value="correct">If</option>
+                                    <option value="wrong">Although</option>
+                                </select> 
+                                there are no donations, you 
+                                <select id="b-mod2" class="blank-input blank-medium">
+                                    <option value="">[Modal + Verb]</option>
+                                    <option value="correct">should record</option>
+                                    <option value="wrong">recording</option>
+                                </select> 
+                                it on the 
+                                <input type="text" id="b-cond2-detail" placeholder="Document type" class="blank-input blank-medium">.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="space-y-3 pt-4 border-t border-slate-200">
+                        <label class="block text-sm font-extrabold text-indigo-900">Work Plan Step 5 (Handover):</label>
+                        <p class="text-slate-800 flex flex-wrap items-center gap-2">
+                            <select id="b-seq3" class="blank-input blank-short">
+                                <option value="">[Sequencer]</option>
+                                <option value="correct">Finally</option>
+                                <option value="wrong">In addition</option>
+                            </select>, 
+                            hand over collected bread to 
+                            <input type="text" id="b-step5-action" placeholder="Recipient organization" class="blank-input blank-medium"> 
+                            the day following the activity.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sign Off -->
+            <div class="bg-white rounded-3xl p-6 md:p-8 border-2 border-sky-200 shadow-lg space-y-4">
+                <div class="space-y-2 text-lg">
+                    <p class="font-semibold text-slate-700">Hope this information helps. Please feel free to contact me if you have further questions.</p>
+                    <p class="font-bold text-slate-800 pt-2">Best regards,</p>
+                    <div>
+                        <input type="text" id="b-sender" placeholder="Sender name" class="blank-input blank-medium">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit & Feedback Button Container -->
+            <div class="bg-white p-6 rounded-3xl border-2 border-sky-200 shadow-xl space-y-4">
+                <button onclick="checkEmailAnswers()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black text-xl py-4 rounded-2xl shadow-xl transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                    <i class="fa-solid fa-paper-plane mr-3 text-2xl"></i> Submit & Check Answers
+                </button>
+                <div id="builder-feedback"></div>
+            </div>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Task Reference Notes Sheet (5 cols - Sticky & Fixed Layout) -->
+        <div id="reference-notes-column" class="hidden lg:block lg:col-span-5 space-y-6">
+            <div class="bg-white p-5 rounded-3xl border-2 border-sky-200 shadow-xl sticky top-28 space-y-4 max-h-[calc(100vh-8.5rem)] flex flex-col transition-all duration-200">
+                <div class="border-b-2 border-sky-100 pb-3 flex justify-between items-center bg-white z-10 flex-shrink-0">
+                    <h3 class="text-xl font-extrabold text-slate-900 flex items-center">
+                        <i class="fa-solid fa-clipboard-list text-blue-600 mr-2.5"></i> Reference Notes Sheet
+                    </h3>
+                    <span class="text-xs bg-emerald-100 text-emerald-800 font-extrabold px-3 py-1 rounded-full border border-emerald-300">Quick Guide</span>
+                </div>
+
+                <div class="space-y-4 text-base overflow-y-auto custom-scrollbar flex-grow pr-1">
+                    <!-- Target & Promo Summary -->
+                    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-300 space-y-2">
+                        <span class="font-extrabold text-amber-900 text-sm block uppercase tracking-wide">
+                            <i class="fa-solid fa-lightbulb mr-1.5 text-amber-600"></i> Phoebe's Brainstorming Notes:
+                        </span>
+                        <ul class="list-disc list-inside space-y-1.5 font-medium text-amber-950 text-sm">
+                            <li><strong>Target participants:</strong> Colleagues & families (Reason: easy to approach, reliable, committed)</li>
+                            <li><strong>Promotional Method:</strong> Internal newsletters (Reason: reach all colleagues directly, simple preparation work)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Work Plan Table Reference -->
+                    <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-2">
+                        <span class="font-extrabold text-indigo-900 text-sm block uppercase tracking-wide">
+                            <i class="fa-solid fa-list-check mr-1.5 text-indigo-600"></i> Work Plan Table (Task Sheet):
+                        </span>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse bg-white rounded-xl overflow-hidden border border-slate-200 text-xs md:text-sm">
+                                <thead>
+                                    <tr class="bg-indigo-600 text-white font-bold">
+                                        <th class="p-2 border border-indigo-700 text-center w-8">#</th>
+                                        <th class="p-2 border border-indigo-700">Action Item</th>
+                                        <th class="p-2 border border-indigo-700">Remark / Condition</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 text-slate-800 font-medium">
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2 border border-slate-200 text-center font-bold text-indigo-600">1</td>
+                                        <td class="p-2 border border-slate-200 font-bold">Confirm list of volunteers</td>
+                                        <td class="p-2 border border-slate-200 text-slate-500">-</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2 border border-slate-200 text-center font-bold text-indigo-600">2</td>
+                                        <td class="p-2 border border-slate-200 font-bold">Send event details ➔ volunteers</td>
+                                        <td class="p-2 border border-slate-200 text-slate-600">e.g. locations, closing times of bakeries</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2 border border-slate-200 text-center font-bold text-indigo-600">3</td>
+                                        <td class="p-2 border border-slate-200 font-bold">Volunteers: arrive at bakeries</td>
+                                        <td class="p-2 border border-slate-200 text-slate-600">5 minutes before closing times</td>
+                                    </tr>
+                                    <tr class="bg-amber-50 hover:bg-amber-100/80">
+                                        <td class="p-2 border border-amber-200 text-center font-bold text-amber-700">4a</td>
+                                        <td class="p-2 border border-amber-200 font-bold text-amber-900">Pack surplus bread</td>
+                                        <td class="p-2 border border-amber-200 font-semibold text-amber-800"><i class="fa-solid fa-code-branch mr-1 text-amber-600"></i> If volunteers receive donations</td>
+                                    </tr>
+                                    <tr class="bg-amber-50 hover:bg-amber-100/80">
+                                        <td class="p-2 border border-amber-200 text-center font-bold text-amber-700">4b</td>
+                                        <td class="p-2 border border-amber-200 font-bold text-amber-900">Record on activity report</td>
+                                        <td class="p-2 border border-amber-200 font-semibold text-amber-800"><i class="fa-solid fa-code-branch mr-1 text-amber-600"></i> If no donations</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50">
+                                        <td class="p-2 border border-slate-200 text-center font-bold text-indigo-600">5</td>
+                                        <td class="p-2 border border-slate-200 font-bold">Collected bread ➔ charity organisations</td>
+                                        <td class="p-2 border border-slate-200 text-slate-600">the day following the activity</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Structure Reminder -->
+                    <div class="bg-sky-50 p-4 rounded-2xl border border-sky-200 text-sm text-slate-800 space-y-1.5">
+                        <span class="font-extrabold text-blue-900 block uppercase tracking-wide">
+                            <i class="fa-solid fa-circle-info mr-1 text-blue-600"></i> Grammar Structure Checklist:
+                        </span>
+                        <p>• <strong>Modal + Verb:</strong> <em>should confirm</em> (no 'to')</p>
+                        <p>• <strong>Suggesting:</strong> <em>It might be a good idea to + base verb</em> / <em>I suggest + -ing</em></p>
+                        <p>• <strong>Conditionals:</strong> <em>If + condition, + instruction / main clause</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ================= SECTION 3: MODEL ANSWER & GRAMMAR ANALYSIS ================= -->
+<section id="sec-review" class="space-y-6 hidden">
+    <div class="bg-white p-6 md:p-8 rounded-3xl border-2 border-sky-200 shadow-xl space-y-4">
+        <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 flex items-center">
+            <i class="fa-solid fa-graduation-cap text-blue-600 mr-3"></i> Step 3: Model Answer & Target Grammar Breakdown
+        </h2>
+        <p class="text-slate-700 text-lg leading-relaxed">
+            Review the complete model email reply first, followed by the detailed grammar explanations and target language breakdown below.
+        </p>
+
+        <!-- Color Legend for Highlighting -->
+        <div class="flex flex-wrap gap-3 pt-2 text-sm font-bold">
+            <span class="px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 flex items-center">
+                <i class="fa-solid fa-lightbulb text-amber-600 mr-2"></i> Making Suggestions
+            </span>
+            <span class="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center">
+                <i class="fa-solid fa-link text-emerald-600 mr-2"></i> Connectives / Reasons
+            </span>
+            <span class="px-3 py-1.5 rounded-xl bg-purple-100 text-purple-900 border border-purple-300 flex items-center">
+                <i class="fa-solid fa-arrow-right-1-2 text-purple-600 mr-2"></i> Sequencers & Modals
+            </span>
+            <span class="px-3 py-1.5 rounded-xl bg-sky-100 text-sky-900 border border-sky-300 flex items-center">
+                <i class="fa-solid fa-code-branch text-sky-600 mr-2"></i> If-Conditionals
+            </span>
+            <span class="px-3 py-1.5 rounded-xl bg-rose-100 text-rose-900 border border-rose-300 flex items-center">
+                <i class="fa-solid fa-bolt text-rose-600 mr-2"></i> Imperatives
+            </span>
+        </div>
+    </div>
+
+    <!-- Vertical Stack Container (Single Column Layout for Easier Reading) -->
+    <div class="space-y-8 max-w-5xl mx-auto">
+        <!-- 1. Model Answer Card (Full Width First) -->
+        <div class="bg-white p-6 md:p-8 rounded-3xl border-2 border-sky-200 shadow-xl space-y-4">
+            <div class="border-b-2 border-sky-100 pb-3 flex justify-between items-center">
+                <span class="text-lg font-extrabold text-blue-600 uppercase tracking-wide flex items-center">
+                    <i class="fa-solid fa-envelope mr-2"></i> Model Email Reply (Annotated)
+                </span>
+                <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full">Standard Workplace Email</span>
+            </div>
+
+            <div class="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-200 text-slate-800 space-y-5 leading-relaxed font-normal text-lg">
+                <p>Dear Jason,</p>
+                <p>Thank you for your email about the Bread Runner Campaign. I am writing to make suggestions and explain how to coordinate the event.</p>
+                
+                <p>
+                    Regarding the target participants, 
+                    <span class="bg-amber-100 text-amber-900 font-extrabold px-2 py-1 rounded-lg border border-amber-300" title="Making Suggestion (Pattern A)">it might be a good idea to</span> 
+                    invite our colleagues and their families 
+                    <span class="bg-emerald-100 text-emerald-900 font-extrabold px-2 py-1 rounded-lg border border-emerald-300" title="Connective (Giving Reason)">because</span> 
+                    they are easy to approach. 
+                    <span class="bg-emerald-100 text-emerald-900 font-extrabold px-2 py-1 rounded-lg border border-emerald-300" title="Connective (Adding Information)">Also</span>, 
+                    they are reliable and committed.
+                </p>
+
+                <p>
+                    As for the promotional method, 
+                    <span class="bg-amber-100 text-amber-900 font-extrabold px-2 py-1 rounded-lg border border-amber-300" title="Making Suggestion (Pattern B)">I suggest using</span> 
+                    the company's internal newsletters for two reasons. 
+                    <span class="bg-purple-100 text-purple-900 font-extrabold px-2 py-1 rounded-lg border border-purple-300" title="Sequencer">First</span>, 
+                    they can reach all colleagues directly. 
+                    <span class="bg-emerald-100 text-emerald-900 font-extrabold px-2 py-1 rounded-lg border border-emerald-300" title="Connective (Adding Reason)">In addition</span>, 
+                    the preparation work is simple.
+                </p>
+
+                <p>
+                    To coordinate this campaign, 
+                    <span class="bg-purple-100 text-purple-900 font-extrabold px-2 py-1 rounded-lg border border-purple-300" title="Sequencer">first</span>, 
+                    you <span class="bg-purple-100 text-purple-900 font-extrabold px-2 py-1 rounded-lg border border-purple-300" title="Modal of Advice">should confirm</span> 
+                    the list of volunteers. 
+                    <span class="bg-purple-100 text-purple-900 font-extrabold px-2 py-1 rounded-lg border border-purple-300" title="Sequencer">Then</span>, 
+                    you <span class="bg-purple-100 text-purple-900 font-extrabold px-2 py-1 rounded-lg border border-purple-300" title="Modal of Advice">should send</span> 
+                    event details such as locations and closing times of bakeries to the volunteers. 
+                    The volunteers <span class="bg-purple-100 text-purple-900 font-extrabold px-2 py-1 rounded-lg border border-purple-300" title="Modal of Advice">should arrive</span> 
+                    at bakeries 5 minutes before closing times. 
+                    
+                    <span class="bg-sky-100 text-sky-900 font-extrabold px-2 py-1 rounded-lg border border-sky-300" title="If-Conditional">If</span> 
+                    the volunteers receive donations, 
+                    <span class="bg-rose-100 text-rose-900 font-extrabold px-2 py-1 rounded-lg border border-rose-300" title="Imperative Verb">pack</span> 
+                    the surplus bread. 
+
+                    <span class="bg-sky-100 text-sky-900 font-extrabold px-2 py-1 rounded-lg border border-sky-300" title="If-Conditional">If</span> 
+                    there are no donations, you <span class="bg-purple-100 text-purple-900 font-extrabold px-2 py-1 rounded-lg border border-purple-300" title="Modal of Advice">should record</span> 
+                    it on the activity report. 
+
+                    <span class="bg-purple-100 text-purple-900 font-extrabold px-2 py-1 rounded-lg border border-purple-300" title="Sequencer">Finally</span>, 
+                    <span class="bg-rose-100 text-rose-900 font-extrabold px-2 py-1 rounded-lg border border-rose-300" title="Imperative Verb">hand over</span> 
+                    collected bread to charity organisations the day following the activity.
+                </p>
+
+                <p>Hope this information helps. Please feel free to contact me if you have further questions.</p>
+                <p>Best regards,<br><strong>Phoebe</strong></p>
+            </div>
+        </div>
+
+        <!-- 2. Comprehensive Grammar Breakdown Card (Full Width Below) -->
+        <div class="bg-white p-6 md:p-8 rounded-3xl border-2 border-sky-200 shadow-xl space-y-6">
+            <div class="border-b-2 border-sky-100 pb-3 flex justify-between items-center">
+                <span class="text-lg font-extrabold text-indigo-600 uppercase tracking-wide flex items-center">
+                    <i class="fa-solid fa-book-open mr-2"></i> Detailed Grammar Analysis & Rules
+                </span>
+                <span class="text-xs bg-indigo-100 text-indigo-800 font-bold px-3 py-1 rounded-full">Assessment Focus</span>
+            </div>
+
+            <div class="space-y-6 text-slate-800 text-base">
+                <!-- 1. Making Suggestions -->
+                <div class="p-5 bg-amber-50 border-2 border-amber-200 rounded-2xl space-y-3">
+                    <h4 class="font-extrabold text-amber-900 text-lg flex items-center">
+                        <i class="fa-solid fa-lightbulb text-amber-600 mr-2.5 text-xl"></i> 1. Making Suggestions & Recommendations
+                    </h4>
+                    <p class="text-slate-700">In formal and semi-formal workplace emails, use polite phrases to offer advice to colleagues:</p>
+                    <ul class="list-disc list-inside space-y-2 text-slate-800 font-medium">
+                        <li class="bg-white p-3 rounded-xl border border-amber-200">
+                            <strong class="text-amber-900 font-extrabold">Pattern A:</strong> <code>It might be a good idea to + base verb</code><br>
+                            <span class="text-slate-600 text-sm italic pl-5 block mt-1">Example: It might be a good idea to invite our colleagues. (Never write "to inviting")</span>
+                        </li>
+                        <li class="bg-white p-3 rounded-xl border border-amber-200">
+                            <strong class="text-amber-900 font-extrabold">Pattern B:</strong> <code>I suggest + gerund (-ing verb)</code><br>
+                            <span class="text-slate-600 text-sm italic pl-5 block mt-1">Example: I suggest using the company newsletter. (Common error: <s>I suggest to use</s>)</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 2. Connectives -->
+                <div class="p-5 bg-emerald-50 border-2 border-emerald-200 rounded-2xl space-y-3">
+                    <h4 class="font-extrabold text-emerald-900 text-lg flex items-center">
+                        <i class="fa-solid fa-link text-emerald-600 mr-2.5 text-xl"></i> 2. Connectives & Giving Reasons
+                    </h4>
+                    <p class="text-slate-700">Support recommendations with logical reasons and extra supporting points:</p>
+                    <ul class="space-y-2 text-slate-800 font-medium">
+                        <li class="bg-white p-3 rounded-xl border border-emerald-200">
+                            <strong class="text-emerald-900 font-extrabold">because:</strong> Connects a main proposal directly with a reason clause.
+                            <span class="text-slate-600 text-sm italic block mt-0.5 pl-3">e.g., "...because they are easy to approach."</span>
+                        </li>
+                        <li class="bg-white p-3 rounded-xl border border-emerald-200">
+                            <strong class="text-emerald-900 font-extrabold">Also / In addition:</strong> Transitional adverbs used at the beginning of sentences to add supporting reasons. Follow with a comma.
+                            <span class="text-slate-600 text-sm italic block mt-0.5 pl-3">e.g., "In addition, the preparation work is simple."</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 3. Sequencers & Modals -->
+                <div class="p-5 bg-purple-50 border-2 border-purple-200 rounded-2xl space-y-3">
+                    <h4 class="font-extrabold text-purple-900 text-lg flex items-center">
+                        <i class="fa-solid fa-list-ol text-purple-600 mr-2.5 text-xl"></i> 3. Sequencers & Modals of Advice
+                    </h4>
+                    <p class="text-slate-700">Structure step-by-step procedures in work plans using clear signposts and modal verbs:</p>
+                    <ul class="space-y-2 text-slate-800 font-medium">
+                        <li class="bg-white p-3 rounded-xl border border-purple-200">
+                            <strong class="text-purple-900 font-extrabold">Sequencers (First, Then, Finally):</strong> Mark clear chronological order across multiple work plan tasks.
+                        </li>
+                        <li class="bg-white p-3 rounded-xl border border-purple-200">
+                            <strong class="text-purple-900 font-extrabold">Modals of Advice (should):</strong> Express professional duties or advice.<br>
+                            <span class="text-purple-950 font-extrabold">Rule:</span> <code>should + base verb</code> (e.g., <em>you should confirm</em>). Never place <em>"to"</em> after <em>should</em>.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 4. Conditionals & Imperatives -->
+                <div class="p-5 bg-sky-50 border-2 border-sky-200 rounded-2xl space-y-3">
+                    <h4 class="font-extrabold text-sky-900 text-lg flex items-center">
+                        <i class="fa-solid fa-code-branch text-sky-600 mr-2.5 text-xl"></i> 4. If-Conditionals & Imperatives
+                    </h4>
+                    <p class="text-slate-700">Give instructions for special conditions or alternative workplace scenarios:</p>
+                    <ul class="space-y-2 text-slate-800 font-medium">
+                        <li class="bg-white p-3 rounded-xl border border-sky-200">
+                            <strong class="text-sky-900 font-extrabold">If-Conditionals (Zero / Type 1 Conditionals):</strong> Used when actions depend on specific circumstances.<br>
+                            <span class="text-slate-600 text-sm italic pl-3 block mt-0.5">Pattern: If + condition clause, + result / instruction clause.</span>
+                        </li>
+                        <li class="bg-white p-3 rounded-xl border border-rose-200">
+                            <strong class="text-rose-900 font-extrabold">Imperative Verbs:</strong> Give direct workplace instructions starting with base verbs.<br>
+                            <span class="text-slate-600 text-sm italic pl-3 block mt-0.5">Examples: "pack the surplus bread", "hand over collected bread".</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-4">
+                <button onclick="switchTab('quiz')" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xl py-4 rounded-2xl shadow-lg transition flex items-center justify-center">
+                    Go to Step 4: 10-Min Knowledge Game <i class="fa-solid fa-arrow-right ml-3"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= SECTION 4: 10-MIN KNOWLEDGE GAME ================= -->
+        <section id="sec-quiz" class="space-y-6 hidden">
+            <div class="bg-white p-6 md:p-8 rounded-3xl border-2 border-sky-200 shadow-xl text-center space-y-4">
+                <div class="w-16 h-16 bg-gradient-to-tr from-amber-500 to-amber-600 text-white rounded-3xl flex items-center justify-center text-3xl mx-auto shadow-lg shadow-amber-500/30">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">10-Min Knowledge Game Challenge</h2>
+                <p class="text-slate-700 text-lg max-w-2xl mx-auto">
+                    Test your mastery of workplace email communication rules, suggestions, modals, and conditional structures in this fast-paced 5-question challenge!
+                </p>
+
+                <div id="game-start-screen" class="pt-4">
+                    <button onclick="startGame()" class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-extrabold text-xl px-10 py-4 rounded-2xl shadow-xl transition transform hover:-translate-y-0.5 inline-flex items-center">
+                        <i class="fa-solid fa-play mr-3 text-2xl"></i> Start 10-Min Challenge
+                    </button>
+                </div>
+
+                <!-- Game Play Screen -->
+                <div id="game-play-screen" class="hidden text-left space-y-6 pt-4 max-w-3xl mx-auto">
+                    <div class="flex justify-between items-center bg-slate-100 p-4 rounded-2xl font-bold text-lg">
+                        <span id="question-tracker" class="text-indigo-600">Question 1 of 5</span>
+                        <div class="flex items-center space-x-2 text-amber-600">
+                            <i class="fa-solid fa-stopwatch text-xl"></i>
+                            <span id="game-timer">10:00</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress bar -->
+                    <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+                        <div id="quiz-progress" class="bg-indigo-600 h-full transition-all duration-300" style="width: 20%;"></div>
+                    </div>
+
+                    <div class="bg-white p-6 md:p-8 rounded-3xl border-2 border-sky-200 shadow-lg space-y-6">
+                        <span id="question-category" class="text-xs bg-indigo-100 text-indigo-800 font-extrabold px-3 py-1.5 rounded-full uppercase tracking-wider">Making Suggestions</span>
+                        <h3 id="quiz-question" class="text-xl md:text-2xl font-extrabold text-slate-900 leading-snug"></h3>
+
+                        <div id="quiz-options" class="space-y-3">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <div id="quiz-explanation" class="hidden p-4 rounded-2xl bg-sky-50 border-2 border-sky-200 text-slate-800 text-base"></div>
+
+                        <div class="flex justify-end pt-2">
+                            <button id="next-btn" onclick="nextQuestion()" class="hidden bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-lg px-8 py-3 rounded-2xl shadow-lg transition flex items-center">
+                                Next Question <i class="fa-solid fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game End Screen -->
+                <div id="game-end-screen" class="hidden space-y-6 pt-4 max-w-xl mx-auto text-center">
+                    <div class="bg-white p-8 rounded-3xl border-2 border-sky-200 shadow-xl space-y-4">
+                        <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-inner">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <h3 class="text-3xl font-extrabold text-slate-900">Challenge Completed!</h3>
+                        <p class="text-slate-600 text-lg">Your Challenge Score:</p>
+                        <div class="text-5xl font-black text-amber-600"><span id="final-game-score">0</span> / 100 pts</div>
+                        <p id="final-feedback-msg" class="text-slate-700 font-semibold text-base"></p>
+                        <div class="pt-4">
+                            <button onclick="startGame()" class="bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-lg px-8 py-3.5 rounded-2xl shadow-lg transition">
+                                Play Again <i class="fa-solid fa-rotate-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Global State & Data
+        let globalScore = 0;
+        let timerInterval = null;
+        let timeLeft = 600;
+
+        // Toggle Reference Notes visibility on mobile devices
+        function toggleMobileReference() {
+            const refCol = document.getElementById('reference-notes-column');
+            const toggleText = document.getElementById('ref-toggle-text');
+            if (refCol.classList.contains('hidden')) {
+                refCol.classList.remove('hidden');
+                toggleText.innerText = "Hide Reference Notes";
+            } else {
+                refCol.classList.add('hidden');
+                toggleText.innerText = "Show Reference Notes";
+            }
+        }
+
+        // Quiz Questions Data
+        const quizData = [
+            {
+                category: "Making Suggestions",
+                question: "Which option correctly uses 'I suggest' when making a workplace recommendation?",
+                options: [
+                    "I suggest to invite our colleagues.",
+                    "I suggest inviting our colleagues.",
+                    "It might be a good idea inviting our colleagues.",
+                    "I suggest we inviting our colleagues."
+                ],
+                correct: 1,
+                explanation: "'I suggest' is followed by a gerund (verb + -ing): 'I suggest inviting...'. Conversely, 'It might be a good idea' is followed by 'to + base verb'."
+            },
+            {
+                category: "Imperatives & Actions",
+                question: "Which sentence correctly uses an IMPERATIVE form to direct volunteers when receiving donations?",
+                options: [
+                    "If volunteers receive donations, packing the surplus bread.",
+                    "If volunteers receive donations, pack the surplus bread.",
+                    "If volunteers receive donations, you packed surplus bread.",
+                    "If volunteers receive donations, to pack surplus bread."
+                ],
+                correct: 1,
+                explanation: "An imperative sentence begins directly with the base verb (e.g., 'pack the surplus bread')."
+            },
+            {
+                category: "If-Conditionals",
+                question: "Complete the conditional rule: '____ there are no donations, you should record it on the activity report.'",
+                options: [
+                    "Because",
+                    "If",
+                    "Although",
+                    "In addition"
+                ],
+                correct: 1,
+                explanation: "'If' introduces the specific condition that determines which action should be taken."
+            },
+            {
+                category: "Modals of Advice",
+                question: "Which sentence correctly combines a modal verb of advice with sequence words?",
+                options: [
+                    "First, you should to confirm the list of volunteers.",
+                    "First, you should confirm the list of volunteers.",
+                    "First, you should confirming the list of volunteers.",
+                    "First, you should confirmed the list of volunteers."
+                ],
+                correct: 1,
+                explanation: "The modal verb 'should' MUST be followed by a base verb without 'to' ('should confirm')."
+            },
+            {
+                category: "Sequential Structure",
+                question: "Which sequence word is most appropriate for introducing the final step in the work plan?",
+                options: [
+                    "First",
+                    "In addition",
+                    "Finally",
+                    "Regarding"
+                ],
+                correct: 2,
+                explanation: "'Finally,' is used to mark the concluding instruction step in a workplace email."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        // Tab Switching Logic
+        function switchTab(tab) {
+            document.querySelectorAll('main > section').forEach(sec => sec.classList.add('hidden'));
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('border-blue-600', 'text-blue-600');
+                btn.classList.add('border-transparent', 'text-slate-500');
+            });
+
+            const targetSec = document.getElementById(`sec-${tab}`);
+            const targetBtn = document.getElementById(`tab-${tab}`);
+            if (targetSec) targetSec.classList.remove('hidden');
+            if (targetBtn) {
+                targetBtn.classList.add('border-blue-600', 'text-blue-600');
+                targetBtn.classList.remove('border-transparent', 'text-slate-500');
+            }
+        }
+
+        // Section 2: Interactive Email Builder Validation
+        function checkEmailAnswers() {
+            // Retrieve all element references and values
+            const elements = {
+                'b-recipient': document.getElementById('b-recipient'),
+                'b-opening-purpose': document.getElementById('b-opening-purpose'),
+                'b-sug1-structure': document.getElementById('b-sug1-structure'),
+                'b-target-who': document.getElementById('b-target-who'),
+                'b-conn1': document.getElementById('b-conn1'),
+                'b-extra-reason1': document.getElementById('b-extra-reason1'),
+                'b-sug2-structure': document.getElementById('b-sug2-structure'),
+                'b-promo-method': document.getElementById('b-promo-method'),
+                'b-reason2b': document.getElementById('b-reason2b'),
+                'b-seq1': document.getElementById('b-seq1'),
+                'b-mod1': document.getElementById('b-mod1'),
+                'b-step1-action': document.getElementById('b-step1-action'),
+                'b-seq2': document.getElementById('b-seq2'),
+                'b-info-loc': document.getElementById('b-info-loc'),
+                'b-info-time': document.getElementById('b-info-time'),
+                'b-cond1': document.getElementById('b-cond1'),
+                'b-imp-pack': document.getElementById('b-imp-pack'),
+                'b-cond2': document.getElementById('b-cond2'),
+                'b-mod2': document.getElementById('b-mod2'),
+                'b-cond2-detail': document.getElementById('b-cond2-detail'),
+                'b-seq3': document.getElementById('b-seq3'),
+                'b-step5-action': document.getElementById('b-step5-action'),
+                'b-sender': document.getElementById('b-sender')
+            };
+
+            // Reset field highlight states
+            Object.values(elements).forEach(el => {
+                if (el) {
+                    el.classList.remove('border-rose-500', 'bg-rose-50', 'border-emerald-500', 'bg-emerald-50');
+                }
+            });
+
+            const recipient = elements['b-recipient'].value.trim().toLowerCase();
+            const purpose = elements['b-opening-purpose'].value;
+            const sug1 = elements['b-sug1-structure'].value;
+            const targetWho = elements['b-target-who'].value.trim().toLowerCase();
+            const conn1 = elements['b-conn1'].value;
+            const extraReason1 = elements['b-extra-reason1'].value.trim().toLowerCase();
+            const sug2 = elements['b-sug2-structure'].value;
+            const promoMethod = elements['b-promo-method'].value.trim().toLowerCase();
+            const reason2b = elements['b-reason2b'].value.trim().toLowerCase();
+            const seq1 = elements['b-seq1'].value;
+            const mod1 = elements['b-mod1'].value;
+            const step1Action = elements['b-step1-action'].value.trim().toLowerCase();
+            const seq2 = elements['b-seq2'].value;
+            const infoLoc = elements['b-info-loc'].value.trim().toLowerCase();
+            const infoTime = elements['b-info-time'].value.trim().toLowerCase();
+            const cond1 = elements['b-cond1'].value;
+            const impPack = elements['b-imp-pack'].value.trim().toLowerCase();
+            const cond2 = elements['b-cond2'].value;
+            const mod2 = elements['b-mod2'].value;
+            const cond2Detail = elements['b-cond2-detail'].value.trim().toLowerCase();
+            const seq3 = elements['b-seq3'].value;
+            const step5Action = elements['b-step5-action'].value.trim().toLowerCase();
+            const sender = elements['b-sender'].value.trim().toLowerCase();
+
+            const feedback = document.getElementById('builder-feedback');
+
+            let isCorrect = true;
+            let incorrectFields = [];
+
+            function markError(elementId, errorTitle, explanation) {
+                isCorrect = false;
+                if (elements[elementId]) {
+                    elements[elementId].classList.add('border-rose-500', 'bg-rose-50');
+                }
+                incorrectFields.push({ id: elementId, title: errorTitle, msg: explanation });
+            }
+
+            function markSuccess(elementId) {
+                if (elements[elementId]) {
+                    elements[elementId].classList.add('border-emerald-500', 'bg-emerald-50');
+                }
+            }
+
+            // Recipient Check
+            if (!recipient.includes('jason')) { 
+                markError('b-recipient', 'Salutation / Recipient Name', "The incoming email was sent by Jason Lee, so you must address him directly as 'Jason'.");
+            } else { markSuccess('b-recipient'); }
+
+            // Opening Purpose Check
+            if (purpose !== 'correct') { 
+                markError('b-opening-purpose', 'Opening Purpose Statement', "In workplace email replies, state your purpose clearly using 'make suggestions and explain how to coordinate'.");
+            } else { markSuccess('b-opening-purpose'); }
+
+            // Suggestion 1 Structure Check
+            if (sug1 !== 'correct') { 
+                markError('b-sug1-structure', 'Suggestion 1 Phrase', "Use 'it might be a good idea to' followed by a base verb.");
+            } else { markSuccess('b-sug1-structure'); }
+
+            // Target Participants Check
+            if (!targetWho.includes('colleague') && !targetWho.includes('family') && !targetWho.includes('families')) {
+                markError('b-target-who', 'Target Participants', "Refer to Phoebe's notes: target participants are 'colleagues and their families'.");
+            } else { markSuccess('b-target-who'); }
+
+            // Connective Check
+            if (conn1 !== 'correct') { 
+                markError('b-conn1', 'Connective Word', "Use 'because' to connect your proposal with its justification.");
+            } else { markSuccess('b-conn1'); }
+
+            // Supporting Reason Check
+            if (!extraReason1.includes('reliable') && !extraReason1.includes('commit')) { 
+                markError('b-extra-reason1', 'Supporting Reason (Target)', "Mention that they are 'reliable and committed' based on Phoebe's notes.");
+            } else { markSuccess('b-extra-reason1'); }
+
+            // Suggestion 2 Structure Check
+            if (sug2 !== 'correct') { 
+                markError('b-sug2-structure', 'Suggestion 2 Phrase', "After 'I suggest', use a gerund (-ing form), e.g., 'I suggest using'.");
+            } else { markSuccess('b-sug2-structure'); }
+
+            // Promotional Method Check
+            if (!promoMethod.includes('newsletter') && !promoMethod.includes('newsletters')) {
+                markError('b-promo-method', 'Promotional Method', "Refer to the Work Plan: the promotional method is 'internal newsletters'.");
+            } else { markSuccess('b-promo-method'); }
+
+            // Second Reason Check
+            if (!reason2b.includes('simple') && !reason2b.includes('preparation') && !reason2b.includes('prep')) { 
+                markError('b-reason2b', 'Second Reason (Method)', "Mention that the 'preparation work is simple'.");
+            } else { markSuccess('b-reason2b'); }
+
+            // Sequencer 1 Check
+            if (seq1 !== 'correct') {
+                markError('b-seq1', 'Sequencer 1', "Use 'first' to introduce your initial work plan step.");
+            } else { markSuccess('b-seq1'); }
+
+            // Modal 1 Check
+            if (mod1 !== 'correct') {
+                markError('b-mod1', 'Modal Verb (Step 1)', "Modals of advice ('should') must be followed directly by a base verb without 'to'.");
+            } else { markSuccess('b-mod1'); }
+
+            // Step 1 Action Check
+            if (!step1Action.includes('confirm') && !step1Action.includes('list')) { 
+                markError('b-step1-action', 'Action Item (Step 1)', "Step 1 in the Work Plan is to 'confirm the list of volunteers'.");
+            } else { markSuccess('b-step1-action'); }
+
+            // Sequencer 2 Check
+            if (seq2 !== 'correct') {
+                markError('b-seq2', 'Sequencer 2', "Use 'Then' to transition to subsequent work plan steps.");
+            } else { markSuccess('b-seq2'); }
+
+            // Event Details Check
+            if (!infoLoc.includes('location') && !infoLoc.includes('place') && !infoLoc.includes('closing')) {
+                markError('b-info-loc', 'Event Details', "Include 'locations and closing times of bakeries' as stated in Step 2.");
+            } else { markSuccess('b-info-loc'); }
+
+            // Arrival Time Schedule Check
+            if (!infoTime.includes('5') && !infoTime.includes('minute') && !infoTime.includes('before')) {
+                markError('b-info-time', 'Arrival Schedule', "Volunteers must arrive '5 minutes before closing times' (Step 3).");
+            } else { markSuccess('b-info-time'); }
+
+            // Condition 1 Check
+            if (cond1 !== 'correct') {
+                markError('b-cond1', 'Conditional Word 1', "Use 'If' to state conditional rules in work procedures.");
+            } else { markSuccess('b-cond1'); }
+
+            // Imperative Action Check
+            if (!impPack.includes('pack')) {
+                markError('b-imp-pack', 'Imperative Action', "Start directly with base verb 'pack' (e.g. 'pack the surplus bread').");
+            } else { markSuccess('b-imp-pack'); }
+
+            // Condition 2 Check
+            if (cond2 !== 'correct') {
+                markError('b-cond2', 'Conditional Word 2', "Use 'If' for alternative procedural circumstances.");
+            } else { markSuccess('b-cond2'); }
+
+            // Modal 2 Check
+            if (mod2 !== 'correct') { 
+                markError('b-mod2', 'Modal + Verb (Condition B)', "Use 'should record' for the alternative procedural instruction.");
+            } else { markSuccess('b-mod2'); }
+
+            // Document Type Detail Check
+            if (!cond2Detail.includes('report')) { 
+                markError('b-cond2-detail', 'Document Type', "Record zero donations on the 'activity report' (Step 4b).");
+            } else { markSuccess('b-cond2-detail'); }
+
+            // Sequencer 3 Check
+            if (seq3 !== 'correct') {
+                markError('b-seq3', 'Sequencer 3', "Use 'Finally' to signal the final handover step.");
+            } else { markSuccess('b-seq3'); }
+
+            // Handover Action Check
+            if (!step5Action.includes('charity') && !step5Action.includes('organisation') && !step5Action.includes('organization')) { 
+                markError('b-step5-action', 'Recipient Organisation', "Collected bread should be handed over to 'charity organisations' (Step 5).");
+            } else { markSuccess('b-step5-action'); }
+
+            // Sender Check
+            if (!sender.includes('phoebe')) { 
+                markError('b-sender', 'Sign-off Sender Name', "You are writing as Phoebe Chan, so sign off with 'Phoebe'.");
+            } else { markSuccess('b-sender'); }
+
+            if (isCorrect) {
+                feedback.className = "text-emerald-700 bg-emerald-100 p-6 rounded-2xl border-2 border-emerald-400 mt-4 space-y-2 text-left";
+                feedback.innerHTML = `<div class="flex items-center text-xl font-black"><i class="fa-solid fa-circle-check mr-3 text-2xl"></i> Fantastic job! All answers are correct (+50 Points)!</div><p class="text-emerald-900 font-medium text-base">You have successfully applied correct modals, sequencers, and conditionals.</p>`;
+                globalScore += 50;
+                document.getElementById('global-score').innerText = globalScore;
+                setTimeout(() => switchTab('review'), 2200);
+            } else {
+                let errorHtml = `
+                    <div class="font-black text-xl mb-3 text-rose-800 flex items-center justify-between">
+                        <span class="flex items-center"><i class="fa-solid fa-circle-xmark mr-2.5 text-rose-600"></i> Review ${incorrectFields.length} Incorrect Answer(s):</span>
+                        <span class="text-xs bg-rose-200 text-rose-900 px-3 py-1 rounded-full uppercase font-bold">Fields Highlighted in Red</span>
+                    </div>
+                    <ul class="space-y-3 text-left font-normal text-base text-slate-800">`;
+                
+                incorrectFields.forEach(item => {
+                    errorHtml += `
+                        <li class="p-3 bg-white rounded-xl border-l-4 border-rose-500 border-t border-b border-r border-slate-200 shadow-sm">
+                            <strong class="text-rose-700 font-bold block mb-0.5"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> ${item.title}</strong>
+                            <span class="text-slate-700">${item.msg}</span>
+                        </li>`;
+                });
+                
+                errorHtml += `</ul><p class="text-sm mt-3 text-slate-600 font-semibold">Tip: Look at the highlighted red boxes above and match your answers with Phoebe's Work Plan on the right.</p>`;
+                
+                feedback.className = "text-slate-800 bg-rose-50 p-6 rounded-3xl border-2 border-rose-300 mt-4 shadow-lg";
+                feedback.innerHTML = errorHtml;
+            }
+        }
+
+        // Section 4: Quiz Logic
+        function startGame() {
+            document.getElementById('game-start-screen').classList.add('hidden');
+            document.getElementById('game-end-screen').classList.add('hidden');
+            document.getElementById('game-play-screen').classList.remove('hidden');
+
+            currentQuizIndex = 0;
+            quizScore = 0;
+            timeLeft = 600;
+
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+
+            loadQuestion();
+        }
+
+        function updateTimer() {
+            timeLeft--;
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            document.getElementById('game-timer').innerText = `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                endGame();
+            }
+        }
+
+        function loadQuestion() {
+            const q = quizData[currentQuizIndex];
+            document.getElementById('question-tracker').innerText = `Question ${currentQuizIndex + 1} of ${quizData.length}`;
+            document.getElementById('question-category').innerText = q.category;
+            document.getElementById('quiz-question').innerText = q.question;
+
+            const progressPct = ((currentQuizIndex + 1) / quizData.length) * 100;
+            document.getElementById('quiz-progress').style.width = `${progressPct}%`;
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            document.getElementById('quiz-explanation').classList.add('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-4 bg-slate-50 hover:bg-sky-100 rounded-2xl border-2 border-slate-200 transition flex items-center justify-between text-slate-800 text-lg font-bold";
+                btn.innerHTML = `<span>${opt}</span> <i class="fa-regular fa-circle text-slate-400"></i>`;
+                btn.onclick = () => selectAnswer(idx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function selectAnswer(selectedIdx) {
+            const q = quizData[currentQuizIndex];
+            const optionsBtns = document.getElementById('quiz-options').children;
+
+            for (let i = 0; i < optionsBtns.length; i++) {
+                optionsBtns[i].disabled = true;
+                if (i === q.correct) {
+                    optionsBtns[i].className = "w-full text-left p-4 bg-emerald-100 border-2 border-emerald-500 rounded-2xl text-emerald-950 font-bold flex items-center justify-between text-lg";
+                } else if (i === selectedIdx) {
+                    optionsBtns[i].className = "w-full text-left p-4 bg-rose-100 border-2 border-rose-500 rounded-2xl text-rose-950 font-bold flex items-center justify-between text-lg";
+                }
+            }
+
+            if (selectedIdx === q.correct) {
+                quizScore += 20;
+                globalScore += 20;
+                document.getElementById('global-score').innerText = globalScore;
+            }
+
+            const expBox = document.getElementById('quiz-explanation');
+            expBox.classList.remove('hidden');
+            expBox.innerHTML = `<strong>Grammar Insight:</strong> ${q.explanation}`;
+
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            currentQuizIndex++;
+            if (currentQuizIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            document.getElementById('game-play-screen').classList.add('hidden');
+            document.getElementById('game-end-screen').classList.remove('hidden');
+
+            document.getElementById('final-game-score').innerText = quizScore;
+            const msg = document.getElementById('final-feedback-msg');
+
+            if (quizScore >= 80) {
+                msg.innerText = "Excellent performance! You have mastered workplace suggestions, sequencers, and if-conditionals!";
+            } else if (quizScore >= 60) {
+                msg.innerText = "Good job! Review the target language items section to polish your grammar precision.";
+            } else {
+                msg.innerText = "Keep practicing! Revisit the scenario notes and interactive builder to build confidence.";
+            }
+        }
+    </script>
+</body>
+</html>
